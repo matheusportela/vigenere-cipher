@@ -1,11 +1,25 @@
 #include "vigenere.h"
 
-void vigenere(char* dst, char* src, char* pass) {
-    int i;
-    int shift_pos = 0;
+void vigenere_encode(char* dst, char* src, char* pass) {
+    vigenere(dst, src, pass, 1);
+}
 
-    for (i = 0; i < strlen(src); i++)
-        dst[i] = encode_char(src[i], pass, &shift_pos);
+void vigenere_decode(char* dst, char* src, char* pass) {
+    vigenere(dst, src, pass, 0);
+}
+
+void vigenere(char* dst, char* src, char* pass, int encode) {
+    int i;
+    int j;
+
+    for (i = 0, j = 0; i < strlen(src); i++) {
+        if (encode)
+            dst[i] = encode_char(src[i], pass[j]);
+        else
+            dst[i] = decode_char(src[i], pass[j]);
+
+        j = (j + 1) % strlen(pass);
+    }
 
     /* Ensure trailing null character since `dst` may not have been initialized
      * yet.
@@ -13,17 +27,27 @@ void vigenere(char* dst, char* src, char* pass) {
     dst[i] = '\0';
 }
 
-char encode_char(char c, char* pass, int* shift_pos) {
-    return shift_char(c, pass, shift_pos);
+char encode_char(char c, char pass) {
+    return shift_char(c, pass, 1);
 }
 
-char shift_char(char c, char* pass, int* shift_pos) {
-    char base = 32;
-    char interval = 95;
-    int pos = c - base;
-    int shift = pass[*shift_pos] - base;
+char decode_char(char c, char pass) {
+    return shift_char(c, pass, 0);
+}
 
-    *shift_pos = (*shift_pos + 1) % strlen(pass);
+char shift_char(char c, char pass, int encode) {
+    int pos = c - BASE;
+    int shift = pass - BASE;
+    int delta;
 
-    return(base + ((pos + shift) % interval));
+    if (encode) {
+        delta = pos + shift;
+    } else {
+        delta = pos - shift;
+
+        if (delta < 0)
+            delta += INTERVAL;
+    }
+
+    return(BASE + (delta % INTERVAL));
 }

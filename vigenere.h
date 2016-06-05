@@ -17,7 +17,7 @@
  * simply keep repeating the passphrase ad infinitum.
  *
  * Example:
- * "secret text" -> "crypto" -> "uvagxh vvvi"
+ * "secret text" -> "crypto" -> "WX]cZdcg_ii"
  */
 
 #ifndef VIGENERE_H_
@@ -25,18 +25,39 @@
 
 #include <string.h>
 
+#define BASE 32
+#define INTERVAL 95
+
+/* Encode a null-terminated string `src` with the password `pass` and store the
+ * store the result in `dst`.
+ */
+void vigenere_encode(char* dst, char* src, char* pass);
+
+/* Decode a null-terminated string `src` with the password `pass` and store the
+ * store the result in `dst`.
+ */
+void vigenere_decode(char* dst, char* src, char* pass);
+
 /* Apply Vigenère cipher algorithm to `src`, a null-terminated string, storing
  * the output in `dst`, another previously allocated null-terminated string. The
  * passphrase `pass` is used to code the input string.
  */
-void vigenere(char* dst, char* src, char* pass);
+void vigenere(char* dst, char* src, char* pass, int encode);
 
-/* Apply Vigenère cipher encoding for a single character `c` using a password
- * string `pass` and the current password character `shift_pos` to use.
+/* Encode a single character with Vigenère cipher using one character of the
+ * password.
  */
-char encode_char(char c, char* pass, int* shift_pos);
+char encode_char(char c, char pass);
 
-/* Apply logic for shifting characters using a base character.*/
-char shift_char(char c, char* pass, int* shift_pos);
+/* Decode a Vigenère cipher encoded character using one character of the
+ * password.
+ */
+char decode_char(char c, char pass);
+
+/* Shift a character using one character of the password. The flag `encode`
+ * indicates whether the character should be shifted to the positive side
+ * (encode) or the negative side (decode).
+ */
+char shift_char(char c, char pass, int encode);
 
 #endif /* VIGENERE_H_ */

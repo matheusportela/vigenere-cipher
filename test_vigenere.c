@@ -5,9 +5,26 @@
 
 #include "vigenere.h"
 
-void test_vigenere(char* input, char* passphrase, char* expected) {
+void test_vigenere_encode(char* input, char* passphrase, char* expected) {
     char result[strlen(expected)];
-    vigenere(result, input, passphrase);
+    vigenere_encode(result, input, passphrase);
+
+    if (!(strcmp(result, expected) == 0)) {
+        printf("-------------------\n");
+        printf("Failed test\n");
+        printf("-------------------\n");
+        printf("Input: %s\n", input);
+        printf("Passphrase: %s\n", passphrase);
+        printf("Expected: %s\n", expected);
+        printf("Result: %s\n", result);
+        printf("-------------------\n");
+        exit(1);
+    }
+}
+
+void test_vigenere_decode(char* input, char* passphrase, char* expected) {
+    char result[strlen(expected)];
+    vigenere_decode(result, input, passphrase);
 
     if (!(strcmp(result, expected) == 0)) {
         printf("-------------------\n");
@@ -23,24 +40,23 @@ void test_vigenere(char* input, char* passphrase, char* expected) {
 }
 
 int main() {
-    /* Empty inputs */
-    test_vigenere("", "", "");
-    test_vigenere("", "crypto", "");
-
-    test_vigenere(" ", " ", " ");
-    test_vigenere(" ", "!", "!");
-    test_vigenere("!", "!", "\"");
-    test_vigenere("0", " ", "0");
-    test_vigenere("0", "!", "1");
-    test_vigenere("01", "!\"", "13");
-    test_vigenere("0", "0", "@");
-    test_vigenere("0", "A", "Q");
-    test_vigenere("0", "a", "q");
-    test_vigenere("~", " ", "~");
-    test_vigenere("~", "!", " ");
-    test_vigenere("~", "\"", "!");
-    test_vigenere("a", "_", "A");
-    test_vigenere("secret text", "crypto", "WX]cZdcg_ii");
+    test_vigenere_encode("", "", "");
+    test_vigenere_encode("", "crypto", "");
+    test_vigenere_encode(" ", " ", " ");
+    test_vigenere_encode(" ", "!", "!");
+    test_vigenere_encode("!", "!", "\"");
+    test_vigenere_encode("0", " ", "0");
+    test_vigenere_encode("0", "!", "1");
+    test_vigenere_encode("01", "!\"", "13");
+    test_vigenere_encode("0", "0", "@");
+    test_vigenere_encode("0", "A", "Q");
+    test_vigenere_encode("0", "a", "q");
+    test_vigenere_encode("~", " ", "~");
+    test_vigenere_encode("~", "!", " ");
+    test_vigenere_encode("~", "\"", "!");
+    test_vigenere_encode("a", "_", "A");
+    test_vigenere_encode("secret text", "crypto", "WX]cZdcg_ii");
+    test_vigenere_decode("WX]cZdcg_ii", "crypto", "secret text");
 
     printf("Vigenere cipher passed all tests\n");
     return(0);

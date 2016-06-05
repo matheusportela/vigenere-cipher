@@ -55,7 +55,7 @@ void print_help() {
 
 void run_vigenere(char* input, char* pass) {
     char* output = malloc(strlen(input) * sizeof(char));
-    vigenere(output, input, pass);
+    vigenere_encode(output, input, pass);
     printf("%s\n", output);
     free(output);
 }

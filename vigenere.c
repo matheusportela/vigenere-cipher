@@ -11,14 +11,13 @@ void vigenere_decode(char* dst, char* src, char* pass) {
 void vigenere(char* dst, char* src, char* pass, int encode) {
     int i;
     int j;
+    int pass_len = strlen(pass);
 
-    for (i = 0, j = 0; i < strlen(src); i++) {
+    for (i = 0, j = 0; i < strlen(src); i++, j++) {
         if (encode)
-            dst[i] = encode_char(src[i], pass[j]);
+            dst[i] = encode_char(src[i], pass[j % pass_len]);
         else
-            dst[i] = decode_char(src[i], pass[j]);
-
-        j = (j + 1) % strlen(pass);
+            dst[i] = decode_char(src[i], pass[j % pass_len]);
     }
 
     /* Ensure trailing null character since `dst` may not have been initialized

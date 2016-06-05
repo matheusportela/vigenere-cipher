@@ -36,13 +36,7 @@ void vigenere(char* dst, char* src, char* pass);
  */
 char encode_char(char c, char* pass, int* shift_pos);
 
-/* Detects whether a character is lowercase.*/
-int is_lowercase(char c);
-
-/* Detects whether a character is uppercase.*/
-int is_uppercase(char c);
-
 /* Apply logic for shifting characters using a base character.*/
-char shift_char(char c, char* pass, int* shift_pos, char base);
+char shift_char(char c, char* pass, int* shift_pos);
 
 #endif /* VIGENERE_H_ */

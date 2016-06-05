@@ -1,25 +1,25 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "vigenere.h"
-
-#define DEBUG 0
 
 void test_vigenere(char* input, char* passphrase, char* expected) {
     char result[strlen(expected)];
     vigenere(result, input, passphrase);
 
-    if (DEBUG) {
+    if (!(strcmp(result, expected) == 0)) {
+        printf("-------------------\n");
+        printf("Failed test\n");
         printf("-------------------\n");
         printf("Input: %s\n", input);
         printf("Passphrase: %s\n", passphrase);
         printf("Expected: %s\n", expected);
         printf("Result: %s\n", result);
         printf("-------------------\n");
+        exit(1);
     }
-
-    assert(strcmp(result, expected) == 0);
 }
 
 int main() {
@@ -27,11 +27,20 @@ int main() {
     test_vigenere("", "", "");
     test_vigenere("", "crypto", "");
 
-    /* Lowercase letters */
-    test_vigenere("secret text", "crypto", "uvagxh vvvi");
-
-    /* Uppercase letters */
-    test_vigenere("SECRET TEXT", "CRYPTO", "UVAGXH VVVI");
+    test_vigenere(" ", " ", " ");
+    test_vigenere(" ", "!", "!");
+    test_vigenere("!", "!", "\"");
+    test_vigenere("0", " ", "0");
+    test_vigenere("0", "!", "1");
+    test_vigenere("01", "!\"", "13");
+    test_vigenere("0", "0", "@");
+    test_vigenere("0", "A", "Q");
+    test_vigenere("0", "a", "q");
+    test_vigenere("~", " ", "~");
+    test_vigenere("~", "!", " ");
+    test_vigenere("~", "\"", "!");
+    test_vigenere("a", "_", "A");
+    test_vigenere("secret text", "crypto", "WX]cZdcg_ii");
 
     printf("Vigenere cipher passed all tests\n");
     return(0);

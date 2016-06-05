@@ -4,7 +4,11 @@ CFLAGS = -ansi -Wall -g
 INC = -I.
 
 .PHONY: all
-all: test_vigenere
+all: vigenere_cipher test_vigenere
+
+# Create executable files
+vigenere_cipher: vigenere_cipher.o vigenere.o
+	$(CC) -o $@ $^
 
 # Create executable files
 test_vigenere: test_vigenere.o vigenere.o
@@ -18,4 +22,5 @@ test_vigenere: test_vigenere.o vigenere.o
 .PHONY: clean
 clean:
 	-rm -f *.o
+	-rm -f vigenere_cipher
 	-rm -f test_vigenere
